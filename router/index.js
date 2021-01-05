@@ -3,6 +3,7 @@ var router = express.Router();
 	// 接口做对应的拦截配置路由
 var allModules={
 	upload:require('./upload/upload.js'),
+	login:require('./login/login.js'),
 	// multer:require('./upload/multer.js')
 }
 router.all('/api/:module/:action',function(req,res,next){

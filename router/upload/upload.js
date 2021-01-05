@@ -24,8 +24,8 @@ exports.add=function(req,res,next){
 	
 	// 根据存储的路径不同，写对应的路径如上
 	let dataTime=new Date().getTime()
-	let oldPath= (__dirname+'/uploads/'+req.file.filename)
-	let newPath=(__dirname+'/uploads/'+req.file.filename+dataTime+'.'+filesuffix)  
+	let oldPath= (__dirname+'/uploads/'+req.file.filename);
+	let newPath=(__dirname+'/uploads/'+req.file.filename+dataTime+'.'+filesuffix);
 
 	
 	//修改文件名称
@@ -38,7 +38,10 @@ exports.add=function(req,res,next){
 			
 			let paths= 'http://127.0.0.1:7000/uploads/'+req.file.filename+dataTime+'.'+filesuffix
 			console.log('修改后的文件名：', paths);
-			res.json({code:200,fileUrl:paths,msg:'上传成功'});
+			res.json({code:200,
+			fileUrl:paths,
+			fileName:fileName,
+			msg:'上传成功'});
 		}
 	 
 	});
