@@ -5,6 +5,7 @@ var allModules={
 	upload:require('./upload/upload.js'),
 	login:require('./login/login.js'),
 	// multer:require('./upload/multer.js')
+	svgCaptcha:require('./common/svgCaptcha.js'),
 }
 router.all('/api/:module/:action',function(req,res,next){
 	allModules[req.params.module][req.params.action](req,res,next)

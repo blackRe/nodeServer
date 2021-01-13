@@ -28,7 +28,7 @@ var sql = "SELECT 1 + 1 AS solution";
 function select(param) {
 	sql1 = "select ? from ? where ?"
 	connection.query(sql, param, function(err, result) {
-		console.log(result, 'result')
+		//console.log(result, 'result')
 	});
 }
 

@@ -1,6 +1,8 @@
 const express = require('express')
 let app = express()
 var mysql=require('mysql')
+
+
 // var setting=require('../../common/setting.js')
 exports.connection = mysql.createConnection({
 

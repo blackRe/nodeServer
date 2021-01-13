@@ -25,7 +25,7 @@ const fieldsMidle  = upload.fields([
 
 
 app.post('/profile', upload.single('avatar'), function (req, res, next) {
-	console.log(req,'文件')
+	//console.log(req,'文件')
 	
   // req.file is the `avatar` file
   // req.body will hold the text fields, if there were any

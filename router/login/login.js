@@ -2,6 +2,7 @@
 // let app = express()
 // var mysql=require('mysql')
 var mysqlSetting=require('../common/setting.js')
+var messageAjax=require('../common/messageAjax.js')//提示语
 // var connection = mysql.createConnection({
 
 // 	host: "localhost",
@@ -26,7 +27,9 @@ var mysqlSetting=require('../common/setting.js')
 //single是单图片上传，多图片上传 array ,single里面就是上传图片的key值 
 //和图片相关的是req.file 
 exports.login=function(req,res,next){
-	console.log('ppp')
+	console.log(messageAjax.USER_MSG.LOGIN,'ppp')
+	console.log(req.session.captcha,'req.session.captcha')
+	
 	let sql="SELECT * FROM user WHERE name='klp'"
 	
 		mysqlSetting.connection.query(sql,[],function(err,result){
@@ -40,7 +43,7 @@ exports.login=function(req,res,next){
 			}else{
 				res.json({
 					code:400,
-					msg:err,
+					msg:messageAjax.USER_MSG.LOGIN,
 				});
 			}
 			
