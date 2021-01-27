@@ -114,29 +114,41 @@ exports.setUser = function(req, res, next) {
 	
 	async.series({
 		one: function (cb) {
-			let selData=setSelect(req, res, next)
-			console.log(selData,'setUser')
-				if (selData) {
-					// return res.json({
-					// 	code: 400,
-					// 	data: selData,
-					// 	msg: messageAjax.USER_MSG.SEL_PEN,
-					// 	// msg:'11',
-					// });
-					// 如果存在跳出，提示手机号，用户名或者邮箱重复
-					cb(messageAjax.USER_MSG.SEL_PEN, 'one1')
-				}else{
-					cb(null, 'one2')
+			// 查询数据库
+			mysqlSetting.connection.query(mysqlAll.USER_ALL.USER_SELECT, [user.name, user.phone], function(err, result) {
+				// console.log(result,'result')
+				if (err) {
+					return res.json({
+						code: 400,
+						data: err,
+						msg: '网络错误',
+					});
+				} else {
+					if (result.length) {
+						// return res.json({
+						// 	code: 400,
+						// 	data: selData,
+						// 	msg: messageAjax.USER_MSG.SEL_PEN,
+						// 	// msg:'11',
+						// });
+						// 如果存在跳出，提示手机号，用户名或者邮箱重复
+						cb('存在数据', 'one1')
+					}else{
+						cb(null, 'one2')
+					}
 				}
+			});
+			
+			
+			
+				
 			
 		},
 		two: function (cb) {
-			mysqlSetting.connection.query(mysqlAll.USER_ALL.USER_SET, 
-			[user.name, user.pwd,user.email, user.phone, create_time,updata_time
-			], function(err, result) {
+			mysqlSetting.connection.query(mysqlAll.USER_ALL.USER_SET, [user.name, user.pwd,user.email, user.phone, create_time,updata_time], function(err, result) {
 				// console.log(result,'result')
 				if (err) {
-					cb('网络错误 ','two1')
+					cb('插入数据失败 ','two1')
 					// return res.json({
 					// 	code: 400,
 					// 	data: err,
@@ -156,6 +168,23 @@ exports.setUser = function(req, res, next) {
 		}
 	}, function (err, results) {
 		console.log(results);
+		if(results.one=='one1'){
+			return res.json({
+				code: 400,
+				msg: messageAjax.USER_MSG.SEL_PEN,
+			});
+		}else if(results.one=='two1'){
+			return res.json({
+				code: 400,
+				msg: '数据插入失败',
+			});
+		}else if(results.one=='two2'){
+			return res.json({
+				code: 200,
+				msg: '数据插入成功',
+			});
+		}
+		
 	})
 	
 	
