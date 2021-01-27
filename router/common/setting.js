@@ -22,7 +22,7 @@ exports.connection = mysql.createConnection({
 	 long_password:'on',
 	
 	
-	debug:true
+	debug:['ComQueryPacket'],//日志打印
 
 })
 //single是单图片上传，多图片上传 array ,single里面就是上传图片的key值 

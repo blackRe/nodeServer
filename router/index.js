@@ -4,6 +4,7 @@ var router = express.Router();
 var allModules={
 	upload:require('./upload/upload.js'),
 	login:require('./login/login.js'),
+	user:require('./user/user.js'),
 	// multer:require('./upload/multer.js')
 	svgCaptcha:require('./common/svgCaptcha.js'),
 }
