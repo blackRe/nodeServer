@@ -4,6 +4,10 @@
 var mysqlAll = require('../common/mysqlAll.js') //sql语法汇总
 var mysqlSetting = require('../common/setting.js')
 var messageAjax = require('../common/messageAjax.js') //提示语
+
+var async = require('async') //调用数据库同步方法
+
+
 // var connection = mysql.createConnection({
 
 // 	host: "localhost",
@@ -92,59 +96,77 @@ function setSelect(req,res,next) {
 }
 
 exports.setUser = function(req, res, next) {
-	console.log(req.session.captcha, 'req.session.captcha')
+	
 	// req.query 获取get，
 	// req.body 获取post
 	// console.log(req.body, 'body')
 
 	var user = req.body
+	console.log(req.session.captcha, user,'req.session.captcha')
 	// 该参数是获取图形验证码的session
-	if (req.session.captcha != req.body.yzm) {
+	if (req.session.captcha != user.yzm) {
 		return res.json({
 			code: 400,
 			msg: messageAjax.USER_MSG.E_YZM,
 			// msg:'11',
 		});
 	}
+	
+	async.series({
+		one: function (cb) {
+			let selData=setSelect(req, res, next)
+			console.log(selData,'setUser')
+				if (selData) {
+					// return res.json({
+					// 	code: 400,
+					// 	data: selData,
+					// 	msg: messageAjax.USER_MSG.SEL_PEN,
+					// 	// msg:'11',
+					// });
+					// 如果存在跳出，提示手机号，用户名或者邮箱重复
+					cb(messageAjax.USER_MSG.SEL_PEN, 'one1')
+				}else{
+					cb(null, 'one2')
+				}
+			
+		},
+		two: function (cb) {
+			mysqlSetting.connection.query(mysqlAll.USER_ALL.USER_SET, 
+			[user.name, user.pwd,user.email, user.phone, create_time,updata_time
+			], function(err, result) {
+				// console.log(result,'result')
+				if (err) {
+					cb('网络错误 ','two1')
+					// return res.json({
+					// 	code: 400,
+					// 	data: err,
+					// 	msg: '网络错误',
+					// });
+				} else {
+					cb(null,'two2')
+					// res.json({
+					// 	code: 200,
+					// 	data: result,
+					// 	msg: messageAjax.USER_MSG.SET_USER,
+					// });
+				}
+			});
+			
+			
+		}
+	}, function (err, results) {
+		console.log(results);
+	})
+	
+	
+	
 	//获取创建时间和更新时间
 	var create_time = parseInt(new Date().getTime()) / 1000
 	var updata_time = create_time
-	let selData=setSelect(req, res, next)
 	
-console.log(selData,'setUser')
-	if (selData) {
-		return res.json({
-			code: 400,
-			data: selData,
-			msg: messageAjax.USER_MSG.SEL_PEN,
-			// msg:'11',
-		});
-	}
-	mysqlSetting.connection.query(mysqlAll.USER_ALL.USER_SET, [user.name, user.pwd, user.email, user.phone, create_time,
-		updata_time
-	], function(err, result) {
-		// console.log(result,'result')
-		if (err) {
+	
 
-			return res.json({
-				code: 400,
-				data: err,
-				msg: '网络错误',
-			});
-		} else {
-
-			res.json({
-				code: 200,
-				data: result,
-				msg: messageAjax.USER_MSG.SET_USER,
-			});
-		}
-
-
-
-
-
-	});
+	
 
 	//请勿开启，开启后接口调用第二次调用会出现错误
 	// connection.end();

@@ -1,19 +1,29 @@
 var http = require('http');
 var express = require('express')
+var app = express();
+//解决post请求参数无法获取
+var bodyParser =require('body-parser')
 // session模块
 var session = require('express-session')
-
-var app = express();
 // session设置
+let test1Name=new Date().getTime()
 app.use(session({
 	name: 'test1', // 非常重要，用于区分两个系统的session
-	secret: 'test1 cat',
+	secret: 'test1'+test1Name,// 建议使用 128 个字符的随机字符串
 	cookie: {
-		maxAge: 5 * 60 * 60 * 1000
-	},
-	resave: true,
-	saveUninitialized: true
+		maxAge: 3600 * 60 * 60 * 1000
+	},//cookie生存周期，毫秒计算
+	resave: true,//cookie之间的请求规则,假设每次登陆，就算会话存在也重新保存一次
+	saveUninitialized: true//强制保存未初始化的会话到存储器
 }));
+
+
+// app.use(bodyPaeser.json({
+//     // extended: false,                 //扩展模式
+//     limit:    2*1024*1024           //限制-2M
+//  }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 
 const httpServer = http.createServer(app)
@@ -80,10 +90,10 @@ app.use(function(req, res, next) {
 	let url = req.url;
 
 	if (req.method == 'GET') {
-		console.log(url, req.method, 'GET请求')
+		//console.log(url, req.method, 'GET请求')
 		next()
 	} else if (req.method == 'POST') {
-		console.log(url, req.method, 'POST请求')
+		//console.log(url, req.method, 'POST请求')
 		next()
 	} else {
 		res.json({
