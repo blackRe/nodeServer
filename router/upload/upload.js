@@ -8,10 +8,7 @@ const path = require('path')
 exports.add=function(req,res,next){
 	//console.log(req,'调用图片上传接口');
 	//console.log(req.file,'originalname:')
-	
-	
-	
-	
+
 	// 获取后缀
 	let fileName=req.file.originalname
 	var first = fileName.lastIndexOf(".");//取到文件名开始到最后一个点的长度

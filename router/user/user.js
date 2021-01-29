@@ -91,8 +91,7 @@ exports.setUser = function(req, res, next) {
 
 		},
 		two: function(cb) {
-			mysqlSetting.connection.query(mysqlAll.USER_ALL.USER_SET, [user.name, user.pwd, user.email, user.phone,
-				create_time, updata_time
+			mysqlSetting.connection.query(mysqlAll.USER_ALL.USER_SET, [user.name, user.pwd, user.email, user.phone,user.imageUrl,create_time, updata_time
 			], function(err, result) {
 				// console.log(result,'result')
 				if (err) {
