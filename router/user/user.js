@@ -6,14 +6,13 @@ var mysqlSetting = require('../common/setting.js')
 var messageAjax = require('../common/messageAjax.js') //提示语
 
 var async = require('async') //调用数据库同步方法
-
+var loggerContent = require('../common/logger.js') //日志
 exports.userList = function(req, res, next) {
 	// console.log(messageAjax.USER_MSG.LOGIN,'ppp')
 	console.log(req.session.captcha, 'req.session.captcha')
 	// req.query 获取get，
 	// req.body 获取post
 	console.log(req.body, 'body')
-
 	var user = req.query
 	// 该参数是获取图形验证码的session
 
@@ -24,7 +23,7 @@ exports.userList = function(req, res, next) {
 	mysqlSetting.connection.query(mysqlAll.USER_ALL.USER_LIST, [0], function(err, result) {
 		console.log(result, 'result')
 		if (result.length > 0) {
-
+		
 			res.json({
 				code: 200,
 				data: result,
@@ -38,7 +37,7 @@ exports.userList = function(req, res, next) {
 				msg: messageAjax.USER_MSG.USER_EROR,
 			});
 		}
-
+		
 	});
 
 	//请勿开启，开启后接口调用第二次调用会出现错误
@@ -52,7 +51,9 @@ exports.setUser = function(req, res, next) {
 	// req.query 获取get，
 	// req.body 获取post
 	// console.log(req.body, 'body')
-
+loggerContent.createLog('test','error',{labelOptions:{label:'我是测试页面error111'}});
+///loggerContent.loggers.get('testError','pppp');
+//logerr.error(1,'参数2');
 	var user = req.body
 	// 该参数是获取图形验证码的session
 	if (req.session.captcha != user.yzm) {
@@ -115,7 +116,12 @@ exports.setUser = function(req, res, next) {
 		}
 	}, function(err, results) {
 		console.log(err, results);
+		//winston.loggers.add('testDebugklp', createLog('testklp','debug',{labelOptions:{label:'我是测试页面debug'}}));
+		//loggerContent.loggers.add('testDebug', createLog('test','debug',{labelOptions:{label:'用户新增失败'}}));
+		
 		if (err) {
+			//winston.apiRequestLogger(req, res, next)
+			//loggerContent.loggers.add('testDebug', createLog('test','debug',{labelOptions:{label:'用户新增失败'}}));
 			return res.json({
 				code: 400,
 				msg: err,

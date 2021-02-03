@@ -1,6 +1,8 @@
 var http = require('http');
 var express = require('express')
 var app = express();
+//var winston = require('./router/common/logger.js') //log日志
+
 //解决post请求参数无法获取
 var bodyParser =require('body-parser')
 // session模块
