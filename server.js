@@ -55,7 +55,8 @@ app.post('/profile', upload.single('avatar'), function(req, res, next) {
 })
 
 app.post('/photos/upload', upload.array('photos', 12), function(req, res, next) {
-	//console.log(req)
+	uploadsFn.addList(req, res, next)
+	// console.log(req,'klp')
 	// req.files is array of `photos` files
 	// req.body will contain the text fields, if there were any
 })
@@ -128,7 +129,7 @@ app.use(express.static("./router/upload")); //将静态资源托管，这样才�
 
 
 httpServer.listen(7000, function() {
-	console.log('接口已启动')
+	console.log('7000接口已启动')
 });
 
 
