@@ -9,6 +9,7 @@ var allModules={
 	// multer:require('./upload/multer.js')
 	svgCaptcha:require('./common/svgCaptcha.js'),
 }
+//当vue页面完成后将页面丢进来，将他的路由替换即可 /apiProxy/api/
 router.all('/api/:module/:action',function(req,res,next){
 	allModules[req.params.module][req.params.action](req,res,next)
 })
