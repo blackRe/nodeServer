@@ -5,6 +5,7 @@ var allModules={
 	upload:require('./upload/upload.js'),
 	login:require('./login/login.js'),
 	user:require('./user/user.js'),
+	postMan:require('./common/postman.js'),//postman调用
 	// multer:require('./upload/multer.js')
 	svgCaptcha:require('./common/svgCaptcha.js'),
 }

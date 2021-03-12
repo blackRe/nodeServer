@@ -92,6 +92,19 @@ exports.login=function(req,res,next){
 	//请勿开启，开启后接口调用第二次调用会出现错误
 	// connection.end();
 	
+	exports.getReqesAll=function(req,res,next){
+		
+		res.json({
+			code:200,
+			msg:res,
+		});
+		 
+		
+		//请勿开启，开启后接口调用第二次调用会出现错误
+		// connection.end();
+		
+		
+	}
 	
 }
 

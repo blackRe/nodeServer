@@ -51,7 +51,7 @@ exports.setUser = function(req, res, next) {
 	// req.query 获取get，
 	// req.body 获取post
 	// console.log(req.body, 'body')
-loggerContent.createLog('test','error',{labelOptions:{label:'我是测试页面error111'}});
+//loggerContent.createLog('test','error',{labelOptions:{label:'我是测试页面error111'}});
 ///loggerContent.loggers.get('testError','pppp');
 //logerr.error(1,'参数2');
 	var user = req.body
