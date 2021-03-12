@@ -111,7 +111,8 @@ app.use(function(req, res, next) {
 // 路由
 app.use('/', routerIndex)
 // app.use('/upload',require("./routes/upload/upload"));
-app.use(express.static("./router/upload")); //将静态资源托管，这样才能在浏览器上直接访问预览图片或则html页面
+//将静态资源托管，这样才能在浏览器上直接访问预览图片或则html页面，所以需要访问的页面可以放在里面即可
+app.use(express.static("./router/upload")); 
 
 
 // app.all('*', function(req, res, next) {
@@ -129,15 +130,6 @@ app.use(express.static("./router/upload")); //将静态资源托管，这样才�
 
 
 httpServer.listen(7000, function() {
-	console.log('7000接口已启动')
+	console.log('7000接口已启动，页面请访问http://127.0.0.1:7000/webDist1/index.html#/')
 });
 
-
-
-
-
-
-
-
-// 终端打印如下信息
-// console.log('Server running at http://127.0.0.1:8000');
