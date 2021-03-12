@@ -6,9 +6,29 @@
     "auditLog": "logs/test/testdebug/.42e91be2ebe7a1e637b2c4e150db93c733a57c3e-audit.json",
     "files": [
         {
-            "date": 1612173632657,
-            "name": "logs/test/testdebug/testdebug-2021-02-01.log",
-            "hash": "484900f4980512ba18a72532c26db668"
+            "date": 1614750379497,
+            "name": "logs/test/testdebug/testdebug-2021-03-03.log",
+            "hash": "9572911e16b010a2a584d47ac25ec865"
+        },
+        {
+            "date": 1615255956382,
+            "name": "logs/test/testdebug/testdebug-2021-03-09.log",
+            "hash": "85a28172bddbc8fc83ab43f7db5bc09f"
+        },
+        {
+            "date": 1615368919237,
+            "name": "logs/test/testdebug/testdebug-2021-03-10.log",
+            "hash": "1d38373ff2b85dfb0b95917337bfb840"
+        },
+        {
+            "date": 1615431324904,
+            "name": "logs/test/testdebug/testdebug-2021-03-11.log",
+            "hash": "154fe118393d10af6f097047c854d33e"
+        },
+        {
+            "date": 1615527776642,
+            "name": "logs/test/testdebug/testdebug-2021-03-12.log",
+            "hash": "11433b7c4a346367d64f78e7d4cfe375"
         }
     ]
 }
