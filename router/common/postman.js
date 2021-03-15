@@ -5,6 +5,7 @@ var request = require('request');
 var mysqlAll=require('../common/mysqlAll.js')//sql语法汇总
 var mysqlSetting=require('../common/setting.js')
 var messageAjax=require('../common/messageAjax.js')//提示语
+var commonMothos=require('../common/commonMothos.js')//公共方法，包含政策，以及各类全局js
 
 	
 	exports.postManAjax=function(req,res,next){
@@ -46,18 +47,25 @@ var messageAjax=require('../common/messageAjax.js')//提示语
 			    method:'POST',    //请求方式
 			    url:bodyData.httpUrl, //url
 			    form:bodyData.dataAjax,
+				headers:bodyData.headerData
 			     
 			},function (error, response, body) {
+				var data;
+				if(commonMothos.isJSON(body)){
+					data=JSON.parse(body)
+				}else{
+					data=body
+				}
 			    if (!error && response.statusCode == 200) {
 			        // console.log(body);
 								res.json({
 									code:200,
-									msg:JSON.parse(body) ,
+									data:data ,
 								});
 			    }else{
 						  res.json({
 						  	code:400,
-						  	msg:error,
+						  	data:error,
 						  });
 			        // console.log("error");
 			    }
@@ -78,18 +86,28 @@ var messageAjax=require('../common/messageAjax.js')//提示语
 			    method:'GET',    //请求方式
 			    url:bodyData.httpUrl, //url
 			    qs:bodyData.dataAjax,
-			     
+			    headers:bodyData.headerData
 			},function (error, response, body) {
+				// console.log(response,'response')
+				// console.log(error,'error')
+				//commonMothos.isJSON(body);;判断是否为json
+				var data;
+				if(commonMothos.isJSON(body)){
+					data=JSON.parse(body)
+				}else{
+					data=body
+				}
+				
 			    if (!error && response.statusCode == 200) {
-			        // console.log(body);
 								res.json({
 									code:200,
-									msg:JSON.parse(body) ,
+									data:data,
 								});
+							
 			    }else{
 						  res.json({
 						  	code:400,
-						  	msg:error,
+						  	data:error,
 						  });
 			        // console.log("error");
 			    }
