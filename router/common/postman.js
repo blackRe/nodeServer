@@ -31,17 +31,9 @@ var commonMothos=require('../common/commonMothos.js')//公共方法，包含政�
 		}]
 		*/
 	   var bodyData=req.body
-	   var getData={}
-	   for (let i = 0; i < bodyData.addData.length; i++) {
-		  if(bodyData.addData[i].actVal=='true'){
-			  console.log(getData[bodyData.addData[i].KEY],'pppp')
-			  // getData[bodyData.addData[i].KEY] = getData[bodyData.addData[i].VALUE
-		  }
-			
-	   }
-	  // console.log(getData'getData')
+	   console.log(req.body,'reqreqreqreq')
 	   if(bodyData.ajaxType=='POST'){
-			console.log(bodyData.httpUrl,'bodyData.dataAjaxPOST')
+		   
 			request({
 			    timeout:5000,    // 设置超时
 			    method:'POST',    //请求方式
@@ -50,6 +42,7 @@ var commonMothos=require('../common/commonMothos.js')//公共方法，包含政�
 				headers:bodyData.headerData
 			     
 			},function (error, response, body) {
+				
 				var data;
 				if(commonMothos.isJSON(body)){
 					data=JSON.parse(body)
@@ -73,13 +66,6 @@ var commonMothos=require('../common/commonMothos.js')//公共方法，包含政�
 			
 			
 		}else{
-			let dataJoin=''
-			console.log(bodyData.httpUrl,'bodyData.dataAjax')
-			// for(let i=0;i<bodyData.dataAjax.length;i++ ){
-			// 	let str=bodyData.dataAjax[i].key+'='+bodyData.dataAjax[i].value
-			// 	console.log(str,'strstrstrstr')
-			// 	// dataJoin+=
-			// }
 			
 			request({
 			    timeout:5000,    // 设置超时
@@ -113,26 +99,6 @@ var commonMothos=require('../common/commonMothos.js')//公共方法，包含政�
 			    }
 			});
 			
-			
-			
-			
-			
-			
-			
-			// request('http://adg.yinkeb.com/Service/Login/loginByPassword', function (error, response, body) {
-			//   if (!error && response.statusCode == 200) {
-			 
-			// 		res.json({
-			// 			code:200,
-			// 			msg:JSON.parse(body) ,
-			// 		});
-			//   }else{
-			// 	  res.json({
-			// 	  	code:400,
-			// 	  	msg:'数据不存在，请核对相关信息是否正确',
-			// 	  });
-			//   }
-			// })
 		}
 	  
 	

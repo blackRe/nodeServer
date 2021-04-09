@@ -47,12 +47,19 @@ const upload = multer({
 });
 
 
-app.post('/profile', upload.single('avatar'), function(req, res, next) {
+app.post('/profile', upload.single('file'), function(req, res, next) {
 	// console.log(req,'reqklp')
-	uploadsFn.add(req, res, next)
+	// uploadsFn.add(req, res, next)
+	uploadsFn.postManRequest(req, res, next)
 	// req.file is the `avatar` file
 	// req.body will hold the text fields, if there were any
 })
+// app.post('/postManFileAjax', upload.single('avatarklp'), function(req, res, next) {
+// 	// console.log(req,'reqklp')
+// 	// postmanupload.postManRequest(req, res, next)
+// 	// req.file is the `avatar` file
+// 	// req.body will hold the text fields, if there were any
+// })
 
 app.post('/photos/upload', upload.array('photos', 12), function(req, res, next) {
 	uploadsFn.addList(req, res, next)
@@ -65,6 +72,9 @@ var cpUpload = upload.fields([{
 	name: 'avatar',
 	maxCount: 1
 }, {
+	name: 'avatarklp',
+	maxCount: 1
+},{
 	name: 'gallery',
 	maxCount: 8
 }])

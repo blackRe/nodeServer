@@ -6,29 +6,19 @@
     "auditLog": "logs/test/testerror/.aeade06086988e6fefb27f162ad641dae7263e46-audit.json",
     "files": [
         {
-            "date": 1614750379509,
-            "name": "logs/test/testerror/testerror-2021-03-03.log",
-            "hash": "5022e1ad393d81e5799869f04c14e64e"
+            "date": 1617353399404,
+            "name": "logs/test/testerror/testerror-2021-04-02.log",
+            "hash": "3e4e5d994f354c4097b32aad0811fd62"
         },
         {
-            "date": 1615255956400,
-            "name": "logs/test/testerror/testerror-2021-03-09.log",
-            "hash": "677f301f049fafb82fffba7e4fd4cdb9"
+            "date": 1617862202903,
+            "name": "logs/test/testerror/testerror-2021-04-08.log",
+            "hash": "86d8448efd0ffcb69c5a90f957ab0e72"
         },
         {
-            "date": 1615368919253,
-            "name": "logs/test/testerror/testerror-2021-03-10.log",
-            "hash": "79948f012a29844a79e6988a58b0f32b"
-        },
-        {
-            "date": 1615431324916,
-            "name": "logs/test/testerror/testerror-2021-03-11.log",
-            "hash": "ceeb94e21bfaefb9c2a9795a65180578"
-        },
-        {
-            "date": 1615527776652,
-            "name": "logs/test/testerror/testerror-2021-03-12.log",
-            "hash": "66a7d6addca56d9bd67a4cce3fc11d4d"
+            "date": 1617946091951,
+            "name": "logs/test/testerror/testerror-2021-04-09.log",
+            "hash": "9077f313d3bff6466cf8da775b19eeb6"
         }
     ]
 }
