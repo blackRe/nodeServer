@@ -126,10 +126,10 @@ exports.postManRequest=function(req,res,next){
 			res.json({code:400,msg:'上传失败'});
 		} else{
 		
-			
+			var srcFile="./router/upload/uploads/"+req.file.filename+'.'+filesuffix
 			reqData={
 				//模拟fromData参数 :fs.createReadStream为当前文件路径
-				file:fs.createReadStream(("./router/upload/uploads/"+req.file.filename+'.'+filesuffix)),
+				file:fs.createReadStream(srcFile),
 				mid: '18084',
 				sign:'fef26b54200a2b2e25dc9d3ee13a2e67',
 				time:'1615296749',
@@ -145,6 +145,9 @@ exports.postManRequest=function(req,res,next){
 				},
 			     
 			},function (error, response, body) {
+				
+				
+				
 				var data;
 				if(commonMothos.isJSON(body)){
 					data=JSON.parse(body)
@@ -165,6 +168,13 @@ exports.postManRequest=function(req,res,next){
 						  });
 			        // console.log("error");
 			    }
+				fs.unlink(srcFile, function(err){
+				     if(err){
+				          throw err;
+				     }
+				     console.log('文件:'+srcFile+'删除成功！');
+				})
+				
 			});
 			
 		}
