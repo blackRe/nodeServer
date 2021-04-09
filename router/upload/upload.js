@@ -166,7 +166,6 @@ exports.postManRequest=function(req,res,next){
 						  	code:400,
 						  	data:error,
 						  });
-			        // console.log("error");
 			    }
 				fs.unlink(srcFile, function(err){
 				     if(err){
