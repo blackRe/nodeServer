@@ -102,53 +102,116 @@ exports.postManRequest=function(req,res,next){
 	const  FormData = require('form-data');
 	let f = fs.readFileSync("./router/upload/uploads/"+req.file.filename)
 	let boundaryKey = '----' + new Date().getTime();    // 用于标识请求数据段
-	//formData
-	// let form = new FormData();
-	// form.append('file', f);
-		// console.log(req.file,'ppppp')
-	// console.log("./router/upload/uploads/"+req.file.filename,'ppppp')
+	
+	
+	let fileName=req.file.originalname
+	var first = fileName.lastIndexOf(".");//取到文件名开始到最后一个点的长度
+	var namelength = fileName.length;//取到文件名长度
+	var filesuffix = fileName.substring(first + 1, namelength );//截取获得后缀名
+	
+	
+	// let oldPath= ('/Users/konglingpo/Desktop/nodeServer/uploads/uedUploads/'+req.file.filename)
+	// let newPath=('/Users/konglingpo/Desktop/nodeServer/uploads/uedUploads/'+req.file.filename+'API'+'.'+filesuffix)  
+	
+	// 根据存储的路径不同，写对应的路径如上
+	let dataTime=new Date().getTime()
 	let oldPath= (__dirname+'/uploads/'+req.file.filename);
-	console.log(oldPath,req.file,'ppppp')
-	reqData={
-		//模拟fromData参数 :fs.createReadStream为当前文件路径
-		file:fs.createReadStream(("./router/upload/uploads/"+req.file.filename)),
-		mid: '18084',
-		sign:'fef26b54200a2b2e25dc9d3ee13a2e67',
-		time:'1615296749',
-		// fromData:form
-	}
-	request({
-	    timeout:500000000,    // 设置超时
-	    method:'POST',    //请求方式
-	    url:'http://adg.yinkeb.com/Service/Upload/uploadImage', //url
-	    formData:reqData,
-		headers:{
-			"Content-Type":"multipart/form-data; boundary=" + boundaryKey,
-			'Connection': 'keep-alive'
-		},
-	     
-	},function (error, response, body) {
-		var data;
-		if(commonMothos.isJSON(body)){
-			data=JSON.parse(body)
-		}else{
-			data=body
-		}
+	let newPath=(__dirname+'/uploads/'+req.file.filename+'.'+filesuffix);
+	
+	
+	//修改文件名称
+	fs.rename(oldPath, newPath, function (err) {
+	    if (err){
+			//console.log('error')
+			res.json({code:400,msg:'上传失败'});
+		} else{
 		
-	    if (!error && response.statusCode == 200) {
-	        // console.log(body);
-						res.json({
-							code:200,
-							data:data ,
-						});
-	    }else{
-				  res.json({
-				  	code:400,
-				  	data:error,
-				  });
-	        // console.log("error");
-	    }
+			
+			reqData={
+				//模拟fromData参数 :fs.createReadStream为当前文件路径
+				file:fs.createReadStream(("./router/upload/uploads/"+req.file.filename+'.'+filesuffix)),
+				mid: '18084',
+				sign:'fef26b54200a2b2e25dc9d3ee13a2e67',
+				time:'1615296749',
+			}
+			request({
+			    timeout:500000000,    // 设置超时
+			    method:'POST',    //请求方式
+			    url:'http://adg.yinkeb.com/Service/Upload/uploadImage', //url
+			    formData:reqData,
+				headers:{
+					"Content-Type":"multipart/form-data; boundary=" + boundaryKey,
+					'Connection': 'keep-alive'
+				},
+			     
+			},function (error, response, body) {
+				var data;
+				if(commonMothos.isJSON(body)){
+					data=JSON.parse(body)
+				}else{
+					data=body
+				}
+				
+			    if (!error && response.statusCode == 200) {
+			        // console.log(body);
+								res.json({
+									code:200,
+									data:data ,
+								});
+			    }else{
+						  res.json({
+						  	code:400,
+						  	data:error,
+						  });
+			        // console.log("error");
+			    }
+			});
+			
+		}
+	 
 	});
+	
+	
+	// reqData={
+	// 	//模拟fromData参数 :fs.createReadStream为当前文件路径
+	// 	file:fs.createReadStream(("./router/upload/uploads/"+req.file.filename)),
+	// 	mid: '18084',
+	// 	sign:'fef26b54200a2b2e25dc9d3ee13a2e67',
+	// 	time:'1615296749',
+	// 	// fromData:form
+	// }
+	// request({
+	//     timeout:500000000,    // 设置超时
+	//     method:'POST',    //请求方式
+	//     url:'http://adg.yinkeb.com/Service/Upload/uploadImage', //url
+	//     formData:reqData,
+	// 	headers:{
+	// 		"Content-Type":"multipart/form-data; boundary=" + boundaryKey,
+	// 		'Connection': 'keep-alive'
+	// 	},
+	     
+	// },function (error, response, body) {
+	// 	var data;
+	// 	if(commonMothos.isJSON(body)){
+	// 		data=JSON.parse(body)
+	// 	}else{
+	// 		data=body
+	// 	}
+		
+	//     if (!error && response.statusCode == 200) {
+	//         // console.log(body);
+	// 					res.json({
+	// 						code:200,
+	// 						data:data ,
+	// 					});
+	//     }else{
+	// 			  res.json({
+	// 			  	code:400,
+	// 			  	data:error,
+	// 			  });
+	//         // console.log("error");
+	//     }
+	// });
 	
 	
 	
