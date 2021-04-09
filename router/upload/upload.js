@@ -105,13 +105,13 @@ exports.postManRequest=function(req,res,next){
 	//formData
 	// let form = new FormData();
 	// form.append('file', f);
-		console.log(req.file,'ppppp')
+		// console.log(req.file,'ppppp')
 	// console.log("./router/upload/uploads/"+req.file.filename,'ppppp')
 	let oldPath= (__dirname+'/uploads/'+req.file.filename);
-	// console.log(oldPath,'ppppp')
+	console.log(oldPath,req.file,'ppppp')
 	reqData={
 		//模拟fromData参数 :fs.createReadStream为当前文件路径
-		file:fs.createReadStream("./uploads/"+req.file.filename),
+		file:fs.createReadStream(("./router/upload/uploads/"+req.file.filename)),
 		mid: '18084',
 		sign:'fef26b54200a2b2e25dc9d3ee13a2e67',
 		time:'1615296749',
