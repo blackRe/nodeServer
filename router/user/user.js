@@ -22,7 +22,7 @@ exports.userList = function(req, res, next) {
 
 	mysqlSetting.connection.query(mysqlAll.USER_ALL.USER_LIST, [0], function(err, result) {
 		console.log(result, 'result')
-		if (result.length > 0) {
+		if (result) {
 		
 			res.json({
 				code: 200,

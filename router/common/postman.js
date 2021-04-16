@@ -6,7 +6,7 @@ var mysqlAll=require('../common/mysqlAll.js')//sql语法汇总
 var mysqlSetting=require('../common/setting.js')
 var messageAjax=require('../common/messageAjax.js')//提示语
 var commonMothos=require('../common/commonMothos.js')//公共方法，包含政策，以及各类全局js
-
+const interfaces = require('os').networkInterfaces();//获取当前的网络ip
 	
 	exports.postManAjax=function(req,res,next){
 		// 使用request服务请求到相关接口传递的数据,并将数据返回来
@@ -30,12 +30,18 @@ var commonMothos=require('../common/commonMothos.js')//公共方法，包含政�
 			ESCRIPTION: '' //输入的描述
 		}]
 		*/
+	  
 	   var bodyData=req.body
-	   console.log(req.body,'reqreqreqreq')
+	   console.log(req,getLocalIP,'reqreqreqreq')
+	   // 判断当前的ip
+	   // 字符串匹配当前的ip是否包含127.0.0.1
+	   if(bodyData.httpUrl.indexOf('127.0.0.1')>=0||bodyData.httpUrl.indexOf('localhost')>=0){
+		   bodyData.httpUrl=getLocalIP()//获取当前的if
+	   }
 	   if(bodyData.ajaxType=='POST'){
 		   
 			request({
-			    timeout:5000,    // 设置超时
+			    timeout:50000,    // 设置超时
 			    method:'POST',    //请求方式
 			    url:bodyData.httpUrl, //url
 			    form:bodyData.dataAjax,
@@ -66,9 +72,9 @@ var commonMothos=require('../common/commonMothos.js')//公共方法，包含政�
 			
 			
 		}else{
-			
+			console.log(bodyData.dataAjax,'bodyData.dataAjax')
 			request({
-			    timeout:5000,    // 设置超时
+			    timeout:50000,    // 设置超时
 			    method:'GET',    //请求方式
 			    url:bodyData.httpUrl, //url
 			    qs:bodyData.dataAjax,
@@ -104,3 +110,26 @@ var commonMothos=require('../common/commonMothos.js')//公共方法，包含政�
 	
 }
 
+function getLocalIP(){
+	let IPAdress = '';
+
+	for(var devName in interfaces){
+	  var iface = interfaces[devName];
+
+	  if(devName=='en0'){
+	  for(var i=0;i<iface.length;i++){
+	        var alias = iface[i];
+
+	        if(alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal){
+	              IPAdress = alias.address;
+
+	        }
+
+	  }
+
+	  }
+
+	}
+
+	return IPAdress;
+};

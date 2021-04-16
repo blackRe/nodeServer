@@ -19,6 +19,21 @@
             "date": 1617946091951,
             "name": "logs/test/testerror/testerror-2021-04-09.log",
             "hash": "9077f313d3bff6466cf8da775b19eeb6"
+        },
+        {
+            "date": 1618368158875,
+            "name": "logs/test/testerror/testerror-2021-04-14.log",
+            "hash": "fc5119ec7606c909a23263010b077c94"
+        },
+        {
+            "date": 1618449301807,
+            "name": "logs/test/testerror/testerror-2021-04-15.log",
+            "hash": "4a11bf1568691241e505d9c5fecd2d3c"
+        },
+        {
+            "date": 1618537174284,
+            "name": "logs/test/testerror/testerror-2021-04-16.log",
+            "hash": "6d442568dab750f924eef9542109262e"
         }
     ]
 }

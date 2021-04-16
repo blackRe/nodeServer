@@ -3,6 +3,12 @@ var express = require('express')
 var app = express();
 //var winston = require('./router/common/logger.js') //log日志
 
+
+var path = require("path")
+var router = require("router");
+var routerIndex = require("./router/index.js");
+
+console.log(process.env.NODE_ENV,'启动地址携带的环境')
 //解决post请求参数无法获取
 var bodyParser =require('body-parser')
 // session模块
@@ -28,11 +34,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
-const httpServer = http.createServer(app)
-
-var path = require("path")
-var router = require("router");
-var routerIndex = require("./router/index.js");
 
 
 
@@ -124,7 +125,7 @@ app.use('/', routerIndex)
 //将静态资源托管，这样才能在浏览器上直接访问预览图片或则html页面，所以需要访问的页面可以放在里面即可
 app.use(express.static("./router/upload")); 
 
-
+var httpServer = http.createServer(app)
 // app.all('*', function(req, res, next) {
 // 	res.header('Access-Control-Allow-Origin', '*');
 // 	res.header('Access-Control-Allow-Headers',
@@ -137,9 +138,26 @@ app.use(express.static("./router/upload"));
 // 	}
 // });
 
+// process.env.NODE_ENV 根据不同的环境访问不同的配置
+if(process.env.NODE_ENV=='dev'){
+	// 172.26.188.169 ecs私网ip
+	// console.log(process.env.NODE_ENV+'7000接口已启动，页面请访问http://127.0.0.1:7000/webDist/index.html#/')
+		
+	httpServer.listen(7000,function() {
+		console.log(process.env.NODE_ENV+'7000接口已启动，页面请访问http://127.0.0.1:7000/webDist/index.html#/')
+			
+	});
+}else if(process.env.NODE_ENV=='prd'){
+	// 172.26.188.169 ecs私网ip
+	httpServer.listen(7000,'172.26.188.169',function() {
+		console.log(process.env.NODE_ENV+'7000接口已启动，外网请访问http://8.141.66.163:7000/webDist/index.html#/postman')
+		
+	});
+}else{
+	httpServer.listen(7000,function() {
+		console.log('dev本地7000接口已启动，外网请访问http://127.0.0.1:7000/webDist/index.html#/postman')
+		
+	});
+}
 
-
-httpServer.listen(7000, function() {
-	console.log('7000接口已启动，页面请访问http://127.0.0.1:7000/webDist1/index.html#/')
-});
 

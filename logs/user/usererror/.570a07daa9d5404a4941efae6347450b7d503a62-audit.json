@@ -19,6 +19,21 @@
             "date": 1617946091958,
             "name": "logs/user/usererror/usererror-2021-04-09.log",
             "hash": "292d6fd0d8311284dde8fa7faec59a3c"
+        },
+        {
+            "date": 1618368158877,
+            "name": "logs/user/usererror/usererror-2021-04-14.log",
+            "hash": "1124ae1f5f7e3b8a9b6a7d57cb08d42d"
+        },
+        {
+            "date": 1618449301810,
+            "name": "logs/user/usererror/usererror-2021-04-15.log",
+            "hash": "f95f4e77d8583e3b4930fa80e154b3c8"
+        },
+        {
+            "date": 1618537174289,
+            "name": "logs/user/usererror/usererror-2021-04-16.log",
+            "hash": "58b9da6d972ad31d901a52f359db93f9"
         }
     ]
 }
