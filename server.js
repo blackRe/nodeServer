@@ -47,14 +47,30 @@ const upload = multer({
 
 });
 
-
-app.post('/profile', upload.single('file'), function(req, res, next) {
-	// console.log(req,'reqklp')
-	// uploadsFn.add(req, res, next)
+console.log('进入')
+// app.post('/profile', upload.single('file'), function(req, res, next) {
+// 	console.log(req,'reqklp')
+// 	 uploadsFn.add(req, res, next)
+// 	//uploadsFn.postManRequest(req, res, next)
+// 	// req.file is the `avatar` file
+// 	// req.body will hold the text fields, if there were any
+// })
+app.post('/profile',upload.single('file'), function(req, res, next) {
+	console.log(req,'reqklp')
+	 //uploadsFn.add(req, res, next)
 	uploadsFn.postManRequest(req, res, next)
 	// req.file is the `avatar` file
 	// req.body will hold the text fields, if there were any
 })
+
+app.post('/profile1', upload.single('avatar'), function(req, res, next) {
+	console.log(req,'reqklp')
+	  uploadsFn.add(req, res, next)
+	//uploadsFn.postManRequest(req, res, next)
+	// req.file is the `avatar` file
+	// req.body will hold the text fields, if there were any
+})
+
 // app.post('/postManFileAjax', upload.single('avatarklp'), function(req, res, next) {
 // 	// console.log(req,'reqklp')
 // 	// postmanupload.postManRequest(req, res, next)

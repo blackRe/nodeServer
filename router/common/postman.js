@@ -7,6 +7,75 @@ var mysqlSetting=require('../common/setting.js')
 var messageAjax=require('../common/messageAjax.js')//提示语
 var commonMothos=require('../common/commonMothos.js')//公共方法，包含政策，以及各类全局js
 const interfaces = require('os').networkInterfaces();//获取当前的网络ip
+	const fs = require('fs')
+	const path = require('path')
+	var request = require('request');
+	
+	exports.postSave = function(req, res, next) {
+		// exports.reqAll={
+		// 	ajaxTypePost:ajaxTypePost,
+		// 	reqDataPost:reqDataPost
+		// };
+		let boundaryKey = '----' + new Date().getTime(); // 用于标识请求数据段
+		
+		console.log(global.reqAll,'exports.reqAll')
+				request({
+					timeout: 500000000, // 设置超时
+					//method: 'POST', //请求方式
+					method: global.reqAll.ajaxTypePost, //请求方式
+					url: 'http://adg.yinkeb.com/Service/Upload/uploadImage', //url
+					formData: global.reqAll.reqDataPost,
+					headers: {
+						"Content-Type": "multipart/form-data; boundary=" + boundaryKey,
+						'Connection': 'keep-alive'
+					},
+	
+				}, function(error, response, body) {
+	
+	
+	
+					var data;
+					if (commonMothos.isJSON(body)) {
+						data = JSON.parse(body)
+					} else {
+						data = body
+					}
+					//console.log(data,'data')
+						// res.json({
+							
+						// 	data: data,
+						// });
+					if (!error && response.statusCode == 200) {
+						// console.log(body);
+						res.json({
+							code: 200,
+							data: data,
+						});
+						fs.unlink(srcFile, function(err) {
+							if (err) {
+								throw err;
+							}
+							console.log('文件:' + srcFile + '删除成功！'+data);
+						})
+					} else {
+						res.json({
+							code: 400,
+							data: error,
+						});
+						fs.unlink(srcFile, function(err) {
+							if (err) {
+								throw err;
+							}
+							console.log('文件:' + srcFile + '删除成功！');
+						})
+					}
+					
+	
+				});
+	
+		
+	}
+	
 	
 	exports.postManAjax=function(req,res,next){
 		// 使用request服务请求到相关接口传递的数据,并将数据返回来
@@ -32,12 +101,21 @@ const interfaces = require('os').networkInterfaces();//获取当前的网络ip
 		*/
 	  
 	   var bodyData=req.body
-	   console.log(req,getLocalIP,'reqreqreqreq')
+	   // console.log(req,getLocalIP,'reqreqreqreq')
 	   // 判断当前的ip
 	   // 字符串匹配当前的ip是否包含127.0.0.1
-	   if(bodyData.httpUrl.indexOf('127.0.0.1')>=0||bodyData.httpUrl.indexOf('localhost')>=0){
-		   bodyData.httpUrl=getLocalIP()//获取当前的if
+	   // if(bodyData.httpUrl.indexOf('127.0.0.1')>=0||bodyData.httpUrl.indexOf('localhost')>=0){
+		  //  bodyData.httpUrl=getLocalIP()//获取当前的if
+	   // }
+	   let ipLoc=getLocalIP()
+	   if(bodyData.httpUrl.indexOf('127.0.0.1')>=0){
+	   		bodyData.httpUrl=bodyData.httpUrl.replace('127.0.0.1', ipLoc)
+	   				
+	   }else if(bodyData.httpUrl.indexOf('localhost')>=0){
+	   		bodyData.httpUrl=bodyData.httpUrl.replace('localhost',ipLoc)
+	   				 
 	   }
+	   
 	   if(bodyData.ajaxType=='POST'){
 		   
 			request({
@@ -72,7 +150,7 @@ const interfaces = require('os').networkInterfaces();//获取当前的网络ip
 			
 			
 		}else{
-			console.log(bodyData.dataAjax,'bodyData.dataAjax')
+			console.log(bodyData.dataAjax,bodyData.httpUrl,'bodyData.dataAjax')
 			request({
 			    timeout:50000,    // 设置超时
 			    method:'GET',    //请求方式
@@ -80,7 +158,7 @@ const interfaces = require('os').networkInterfaces();//获取当前的网络ip
 			    qs:bodyData.dataAjax,
 			    headers:bodyData.headerData
 			},function (error, response, body) {
-				// console.log(response,'response')
+				console.log(body,'response')
 				// console.log(error,'error')
 				//commonMothos.isJSON(body);;判断是否为json
 				var data;

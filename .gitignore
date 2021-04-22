@@ -1,0 +1,10 @@
+node_modules/
+ 
+dist/
+ 
+logs
+ 
+ router/upload/uploads
+ 
+ npm-debug.log
+
