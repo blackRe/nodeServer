@@ -5,27 +5,27 @@ const fs = require('fs')
 const path = require('path')
 var request = require('request');
 var commonMothos = require('../common/commonMothos.js') //公共方法，包含政策，以及各类全局js
-const interfaces = require('os').networkInterfaces();//获取当前的网络ip
+const interfaces = require('os').networkInterfaces(); //获取当前的网络ip
 //single是单图片上传，多图片上传 array ,single里面就是上传图片的key值 
 //和图片相关的是req.file 
-function getLocalIP(){
+function getLocalIP() {
 	let IPAdress = '';
 
-	for(var devName in interfaces){
-	  var iface = interfaces[devName];
+	for (var devName in interfaces) {
+		var iface = interfaces[devName];
 
-	  if(devName=='en0'){
-	  for(var i=0;i<iface.length;i++){
-	        var alias = iface[i];
+		if (devName == 'en0') {
+			for (var i = 0; i < iface.length; i++) {
+				var alias = iface[i];
 
-	        if(alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal){
-	              IPAdress = alias.address;
+				if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
+					IPAdress = alias.address;
 
-	        }
+				}
 
-	  }
+			}
 
-	  }
+		}
 
 	}
 
@@ -51,7 +51,7 @@ exports.add = function(req, res, next) {
 	let oldPath = (__dirname + '/uploads/' + req.file.filename);
 	let newPath = (__dirname + '/uploads/' + req.file.filename + dataTime + '.' + filesuffix);
 
-console.log(oldPath,newPath,'进入')
+	console.log(oldPath, newPath, '进入')
 	//修改文件名称
 	fs.rename(oldPath, newPath, function(err) {
 		if (err) {
@@ -62,10 +62,11 @@ console.log(oldPath,newPath,'进入')
 			});
 		} else {
 			//console.log(new Date().getTime())
-			
-		let ipLoc=getLocalIP()
-			let paths = 'http://'+ipLoc+':7000/uploads/' + req.file.filename + dataTime + '.' + filesuffix
-			
+
+			let ipLoc = getLocalIP()
+			let paths = 'http://' + ipLoc + ':7000/uploads/' + req.file.filename + dataTime + '.' +
+				filesuffix
+
 			//let paths = 'http://127.0.0.1:7000/uploads/' + req.file.filename + dataTime + '.' + filesuffix
 			//console.log('修改后的文件名：', paths);
 			res.json({
@@ -84,54 +85,71 @@ console.log(oldPath,newPath,'进入')
 }
 
 
-exports.addList = function(req, res, next) {
+exports.addUploadList = function(req, res, next) {
 	//console.log(req,'调用图片上传接口');
-	//console.log(req.file,'originalname:')
-
-	// 获取后缀
-	let fileName = req.file.originalname
-	var first = fileName.lastIndexOf("."); //取到文件名开始到最后一个点的长度
-	var namelength = fileName.length; //取到文件名长度
-	var filesuffix = fileName.substring(first + 1, namelength); //截取获得后缀名
-
-
-	// let oldPath= ('/Users/konglingpo/Desktop/nodeServer/uploads/uedUploads/'+req.file.filename)
-	// let newPath=('/Users/konglingpo/Desktop/nodeServer/uploads/uedUploads/'+req.file.filename+'API'+'.'+filesuffix)  
-
-	// 根据存储的路径不同，写对应的路径如上
-	let dataTime = new Date().getTime()
-	let oldPath = (__dirname + '/uploads/' + req.file.filename);
-	let newPath = (__dirname + '/uploads/' + req.file.filename + dataTime + '.' + filesuffix);
+	console.log(req.files.gallery, 'originalname:')
+	var gallery = req.files.gallery
+	// var imgPath=[];
+	gallery.forEach(function(i, index) {
+		//获取临时文件的存储路径
+		// imgPath.push(i.path);
+		// console.log("i.path:",i.path)
+		if (index == 0) {
+			console.log('ppp')
+		
+			let fileName = []
+			var first = i.originalname.lastIndexOf("."); //取到文件名开始到最后一个点的长度
+			var namelength = i.originalname.length; //取到文件名长度
+			var filesuffix = i.originalname.substring(first + 1, namelength); //截取获得后缀名
 
 
-	//修改文件名称
-	fs.rename(oldPath, newPath, function(err) {
-		if (err) {
-			//console.log('error')
-			res.json({
-				code: 400,
-				msg: '上传失败'
+			// let oldPath= ('/Users/konglingpo/Desktop/nodeServer/uploads/uedUploads/'+req.file.filename)
+			// let newPath=('/Users/konglingpo/Desktop/nodeServer/uploads/uedUploads/'+req.file.filename+'API'+'.'+filesuffix)  
+
+			// 根据存储的路径不同，写对应的路径如上
+			console.log(i.originalname)
+			let dataTime = new Date().getTime()
+			let oldPath = (__dirname + '/uploads/' + i.originalname);
+			let newPath = (__dirname + '/uploads/' + i.filename + dataTime + '.' + filesuffix);
+			//let newPath = (__dirname + '/uploads/' +  i.originalname);
+
+			console.log(oldPath)
+			//修改文件名称
+			fs.rename(oldPath, newPath, function(err) {
+				if (err) {
+					console.log('error')
+					res.json({
+						code: 400,
+						msg: '上传失败'
+					});
+				} else {
+					//console.log(new Date().getTime())
+
+					let ipLoc = getLocalIP()
+					//let paths = 'http://'+ipLoc+':7000/uploads/' + gallery.filename + dataTime + '.' + filesuffix
+					// let paths = 'http://'+ipLoc+':7000/uploads/' + gallery.filename + dataTime + '.' + filesuffix;
+					// fileName.push(paths)		
+					// res.json({
+					// 	code: 200,
+					// 	fileUrl: paths,
+					// 	fileName: fileName,
+					// 	msg: '上传成功'
+					// });
+				}
+
 			});
-		} else {
-			//console.log(new Date().getTime())
-
-	let ipLoc=getLocalIP()
-			let paths = 'http://'+ipLoc+':7000/uploads/' + req.file.filename + dataTime + '.' + filesuffix
-			//console.log('修改后的文件名：', paths);
-			res.json({
-				code: 200,
-				fileUrl: paths,
-				fileName: fileName,
-				msg: '上传成功'
-			});
-		}
-
+			}
 	});
 
-	// file:///Users/konglingpo/Desktop/nodeServer/uploads/uedUploads/40062c789455f68fc912b01ea63ae0daAPI.png
-	//console.log(filesuffix,'filesuffix')
+
+
+
+
+
+
 
 }
+
 
 
 
@@ -141,8 +159,8 @@ exports.postManRequest = function(req, res, next) {
 	const FormData = require('form-data');
 	let f = fs.readFileSync("./router/upload/uploads/" + req.file.filename)
 	let boundaryKey = '----' + new Date().getTime(); // 用于标识请求数据段
-	console.log(req,req)
-	var reqData=req.query
+	console.log(req, 'reqpppppp')
+	var reqData = req.query
 	let fileName = req.file.originalname
 	var first = fileName.lastIndexOf("."); //取到文件名开始到最后一个点的长度
 	var namelength = fileName.length; //取到文件名长度
@@ -167,9 +185,9 @@ exports.postManRequest = function(req, res, next) {
 				msg: '上传失败'
 			});
 		} else {
-				//console.log(queryData,'resultresult')
+			//console.log(queryData,'resultresult')
 			var srcFile = "./router/upload/uploads/" + req.file.filename + '.' + filesuffix
-			
+
 			// reqData = {
 			// 	//模拟fromData参数 :fs.createReadStream为当前文件路径
 			// 	//file: fs.createReadStream(srcFile),
@@ -177,26 +195,26 @@ exports.postManRequest = function(req, res, next) {
 			// 	sign: 'fef26b54200a2b2e25dc9d3ee13a2e67',
 			// 	time: '1615296749',
 			// }
-			reqData[req.file.fieldname]= fs.createReadStream(srcFile);
-			console.log(reqData,'reqDatareqData')
-			const ajaxType=reqData.ajaxType
-			
-			
-			// reqDataPost=reqData;
-			 let ipLoc=getLocalIP()
-			 if(reqData.httpUrl.indexOf('127.0.0.1')>=0){
-				reqData.httpUrl=reqData.httpUrl.replace('127.0.0.1', ipLoc)
-				
-			 }else if(reqData.httpUrl.indexOf('localhost')>=0){
-				  reqData.httpUrl=reqData.httpUrl.replace('localhost',ipLoc)
-				 
-			 }
+			reqData[req.file.fieldname] = fs.createReadStream(srcFile);
+			console.log(reqData, 'reqDatareqData')
+			const ajaxType = reqData.ajaxType
 
-			console.log( reqData.httpUrl,'1reqData.httpUrl()')
-			var httpUrlTest=reqData.httpUrl
-			 delete reqData.ajaxType
-			 delete reqData.httpUrl
-			  
+
+			// reqDataPost=reqData;
+			let ipLoc = getLocalIP()
+			if (reqData.httpUrl.indexOf('127.0.0.1') >= 0) {
+				reqData.httpUrl = reqData.httpUrl.replace('127.0.0.1', ipLoc)
+
+			} else if (reqData.httpUrl.indexOf('localhost') >= 0) {
+				reqData.httpUrl = reqData.httpUrl.replace('localhost', ipLoc)
+
+			}
+
+			console.log(reqData.httpUrl, '1reqData.httpUrl()')
+			var httpUrlTest = reqData.httpUrl
+			delete reqData.ajaxType
+			delete reqData.httpUrl
+
 			request({
 				timeout: 500000000, // 设置超时
 				//method: 'POST', //请求方式
@@ -228,7 +246,7 @@ exports.postManRequest = function(req, res, next) {
 						if (err) {
 							throw err;
 						}
-						console.log('文件:' + srcFile + '删除成功！'+data);
+						console.log('文件:' + srcFile + '删除成功！' + data);
 					})
 				} else {
 					res.json({
@@ -242,7 +260,7 @@ exports.postManRequest = function(req, res, next) {
 						console.log('文件:' + srcFile + '删除成功！');
 					})
 				}
-				
+
 
 			});
 
@@ -251,9 +269,9 @@ exports.postManRequest = function(req, res, next) {
 	});
 }
 
-global.reqAll={
-	ajaxTypePost:ajaxTypePost,
-	reqDataPost:reqDataPost
+global.reqAll = {
+	ajaxTypePost: ajaxTypePost,
+	reqDataPost: reqDataPost
 };
 
 /*
@@ -309,4 +327,3 @@ exports.postManRequest=function(req,res,next){
 	
 }
 */
-

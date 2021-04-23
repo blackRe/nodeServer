@@ -55,15 +55,29 @@ console.log('进入')
 // 	// req.file is the `avatar` file
 // 	// req.body will hold the text fields, if there were any
 // })
-app.post('/profile',upload.single('file'), function(req, res, next) {
+let urlUp='/profile'
+let urlUp1='/profile1'
+// 根据环境生成不同的配置
+if(process.env.NODE_ENV=='dev'){
+		urlUp='/apiProxy/profile'
+		urlUp1='/apiProxy/profile1'
+}else if(process.env.NODE_ENV=='prd'){
+	// 172.26.188.169 ecs私网ip
+	// urlUp='/apiProxy/profile'
+	// urlUp='/apiProxy/profile1'
+}else{
+	
+}
+// 单张图片上传
+app.post(urlUp,upload.single('file'), function(req, res, next) {
 	console.log(req,'reqklp')
 	 //uploadsFn.add(req, res, next)
 	uploadsFn.postManRequest(req, res, next)
 	// req.file is the `avatar` file
 	// req.body will hold the text fields, if there were any
 })
-
-app.post('/profile1', upload.single('avatar'), function(req, res, next) {
+//单张图片上传
+app.post(urlUp1, upload.single('avatar'), function(req, res, next) {
 	console.log(req,'reqklp')
 	  uploadsFn.add(req, res, next)
 	//uploadsFn.postManRequest(req, res, next)
@@ -79,7 +93,7 @@ app.post('/profile1', upload.single('avatar'), function(req, res, next) {
 // })
 
 app.post('/photos/upload', upload.array('photos', 12), function(req, res, next) {
-	uploadsFn.addList(req, res, next)
+	//uploadsFn.addList(req, res, next)
 	// console.log(req,'klp')
 	// req.files is array of `photos` files
 	// req.body will contain the text fields, if there were any
@@ -95,7 +109,10 @@ var cpUpload = upload.fields([{
 	name: 'gallery',
 	maxCount: 8
 }])
+// 多张上传
 app.post('/cool-profile', cpUpload, function(req, res, next) {
+	console.log(req.files)
+	uploadsFn.addUploadList(req,res,next)
 	// req.files is an object (String -> Array) where fieldname is the key, and the value is array of files
 	//
 	// e.g.
